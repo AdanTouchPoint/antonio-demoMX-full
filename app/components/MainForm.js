@@ -42,7 +42,10 @@ const MainForm = ({setLeads,leads,dataUser, setDataUser, mp, setMp, setEmailData
 
     const click = async e => {
         e.preventDefault();
-
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        const isValidEmail = (email) => {
+            return emailRegex.test(email);
+          };
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.preventDefault();
@@ -50,8 +53,7 @@ const MainForm = ({setLeads,leads,dataUser, setDataUser, mp, setMp, setEmailData
         }
         setValidated(true);
         if (
-        tac === false || state.trim() === '' || emailUser.trim() === '') {
-            
+        tac === false || state.trim() === '' || isValidEmail(emailUser)=== false ) { 
             setError(true)
             return
         } 
