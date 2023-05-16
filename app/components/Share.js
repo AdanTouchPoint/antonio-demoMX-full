@@ -1,19 +1,21 @@
 import Head from "next/head";
-import { FacebookShareButton, TwitterShareButton,WhatsappShareButton,FacebookIcon, TwitterIcon, WhatsappIcon } from "react-share";
+import { LinkedinIcon, LinkedinShareButton,FacebookShareButton, TwitterShareButton,WhatsappShareButton,FacebookIcon, TwitterIcon, WhatsappIcon } from "react-share";
 import "./share.css";
-const Share = ({ url }) => {
-  const shareTitle = "¡Únete a nuestro movimiento! Protejamos nuestas opciones de de movilidad y entregas.  Entra a   #yodecidocomomemuevo";  
+const Share = ({shareMessage,shareUrl }) => {  
   return (
     <div >
-      <FacebookShareButton url={url} quote={shareTitle} hashtag="#yodecidocomomemuevo" className="share-buttons">
+      <FacebookShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} quote={shareMessage? shareMessage.replace(/"/g, '&quot;') :  'Fill this in your dashboard'} hashtag="#yodecidocomomemuevo" className="share-buttons">
       <FacebookIcon size={32} round={true} />
       </FacebookShareButton>
-      <TwitterShareButton url={url} title={shareTitle} className="share-buttons">
+      <TwitterShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} title={shareMessage? shareMessage : 'Fill this in your dashboard'}className="share-buttons">
       <TwitterIcon size={32} round={true} />
       </TwitterShareButton>
-      <WhatsappShareButton url={url} title={shareTitle} className="share-buttons">
+      <WhatsappShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} title={shareMessage? shareMessage : 'Fill this in your dashboard'} className="share-buttons">
       <WhatsappIcon size={32} round={true} />
       </WhatsappShareButton>
+      <LinkedinShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} title={shareMessage? shareMessage : 'Fill this in your dashboard'} className="share-buttons">
+      <LinkedinIcon size={32} round={true} />
+      </LinkedinShareButton>
       <Head>
         {/* Script de Facebook */}
         <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0&appId={tu-app-id}" nonce="abcdefg" />
@@ -25,5 +27,4 @@ const Share = ({ url }) => {
     </div>
   );
 };
-
 export default Share;

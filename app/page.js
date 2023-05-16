@@ -8,6 +8,7 @@ import { fetchStatesData } from './assets/petitions/fetchStatesData';
 import { fetchTweet } from './assets/petitions/fetchTweet';
 import { fetchTYM } from './assets/petitions/fetchTYM';
 import { fetchMainContent } from './assets/petitions/fetchMainContent';
+import {fetchAllLeads} from './assets/petitions/fetchLeads'
 
 //require('dotenv').config()
 function Home() {
@@ -72,7 +73,7 @@ function Home() {
 
         async function fetchData() {
           await Promise.all([
-            //fetchAllLeads('GET', backendURLBase, endpoints.toGetAllLeads, clientId, setLeads),
+            fetchAllLeads('GET', backendURLBase, endpoints.toGetAllLeads, clientId, setLeads),
             fetchMainContent('GET', backendURLBase, endpoints.toGetMainData, clientId, '', setMainData),
             fetchEmailData('GET', backendURLBase, endpoints.toGetEmailsContent, clientId, "", setDataUser),
             fetchStatesData('GET', backendURLBase, endpoints.toGetAllRepresentatives, clientId, '', setStates),

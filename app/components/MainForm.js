@@ -11,7 +11,7 @@ import Card from "react-bootstrap/cjs/Card";
 import {Link, animateScroll as scroll} from "react-scroll";
 import ProgressBar from './ProgressBar';
 import { fetchRepresentatives } from '../assets/petitions/fetchRepresentatives';
-import {fetchAllLeads} from '../assets/petitions/fetchLeads'
+
 const MainForm = ({setLeads,leads,dataUser, setDataUser, mp, setMp, setEmailData, emailData, clientId, states, tweet, typData, mainData, backendURLBase, endpoints, backendURLBaseServices}) => {
     const [showLoadSpin, setShowLoadSpin] = useState(false)
     const [showList, setShowList] = useState(true)
@@ -63,11 +63,6 @@ const MainForm = ({setLeads,leads,dataUser, setDataUser, mp, setMp, setEmailData
         .catch(error => console.log('error', error));
         scroll.scrollToBottom();
     }
-    
-   const loadProgressbar = () => {
-    fetchAllLeads('GET', backendURLBase, endpoints.toGetAllLeads, clientId, setLeads)
-    .catch(error => console.log('error', error));
-   }
     if(!mainData) return 'loading datos'
     if(!mp) return 'loading datos'
     console.log('Main page data', mainData)
@@ -77,7 +72,7 @@ const MainForm = ({setLeads,leads,dataUser, setDataUser, mp, setMp, setEmailData
             console.log('TYPdata', typData)
     return (
 
-        <div onLoad={loadProgressbar()} className={'contenedor main-form-flex-container'} >
+        <div className={'contenedor main-form-flex-container'} >
             <Card className="bg-dark card-img text-white main-image-container">
                 <Card.Header className='card-img'  style={{ backgroundImage: `url(${ mainData.mainImg })`, backgroundPosition: 'center', backgroundSize: 'cover' } } 
                      alt={'header'}/>
