@@ -10,7 +10,7 @@ import Loader from "react-loader-spinner";
 import { fetchData } from '../assets/petitions/fetchData';
 import {fetchLeads} from '../assets/petitions/fetchLeads';
 
-const EmailForm = ({setShowThankYou, setShowFindForm, dataUser, setDataUser, showEmailForm, setShowEmailForm, emailData, setEmailData, clientId, backendURLBase, endpoints, backendURLBaseServices, mainData}) => {
+const EmailForm = ({leads, setLeads, setShowThankYou, setShowFindForm, dataUser, setDataUser, showEmailForm, setShowEmailForm, emailData, setEmailData, clientId, backendURLBase, endpoints, backendURLBaseServices, mainData}) => {
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState(false)
     const [showLoadSpin, setShowLoadSpin] = useState(false)
@@ -50,10 +50,11 @@ const EmailForm = ({setShowThankYou, setShowFindForm, dataUser, setDataUser, sho
             fetchLeads(true, backendURLBase, endpoints, clientId, dataUser, emailData)
             setShowEmailForm(true)
             setShowThankYou(false)
+            setLeads(leads+1)
         }
         if(payload.success !== true){
         fetchLeads(false, backendURLBase, endpoints, clientId, dataUser, emailData)
-        
+        setLeads(leads+1)
             return (
                 <Alert>
                     El correo no ha sido enviado con éxito, por favor intente de nuevo más tarde
