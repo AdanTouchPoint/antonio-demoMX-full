@@ -52,6 +52,17 @@ code {
 .find-her-mp-text{
   padding: 20px 0;
 }
+.fields-form {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.field {
+  justify-content: center;
+  width:60%;
+  text-align: left;
+}
 .container-content{
   text-align: center;
   padding: 30px;
@@ -74,7 +85,7 @@ code {
 }
 .select-label{
   margin-top: 30px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
   font-size: 19px;
 }
 .form-group{

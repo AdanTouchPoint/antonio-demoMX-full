@@ -115,10 +115,8 @@ function Home() {
               backendURLBaseServices={backendURLBaseServices}
               
           />
-
         )
       }
-      
       </>
     )
 
