@@ -19,7 +19,6 @@ const ProgressBar = ({ leads, mainData }) => {
     }, 5);
     return () => clearInterval(interval);
   }, [leads]);
-
   return (
     <div className="wrap-bar">
       <h2>{mainData.progressBarTitle}</h2>    
