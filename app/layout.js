@@ -18,7 +18,6 @@ export default function RootLayout({ children }) {
     </head>
       <body>
         {children}
-        
         <GTMnoscript />
       </body>
     </html>
