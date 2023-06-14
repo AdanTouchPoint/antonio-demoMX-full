@@ -248,10 +248,10 @@ states.length > 0 ?
             <div className="note-container">
               <p>{mainData.note}</p>
             </div>
-            <h2>{mainData.positionName}</h2>
+            <h2>{mainData.senatorLabel}</h2>
             <div className="representatives-container">
-              {mp.length > 0 ? (
-                mp.map((mps, index) => (
+              {senator.length > 0 ? (
+                senator.map((mps, index) => (
                   <List
                     setShowEmailForm={setShowEmailForm}
                     setShowFindForm={setShowFindForm}
@@ -272,10 +272,10 @@ states.length > 0 ?
                 </Alert>
               )}
             </div>
-            <h2>{mainData.senatorLabel}</h2>
+            <h2>{mainData.positionName}</h2>
             <div className="representatives-container">
-              {senator.length > 0 ? (
-                senator.map((mps, index) => (
+              {mp.length > 0 ? (
+                mp.map((mps, index) => (
                   <List
                     setShowEmailForm={setShowEmailForm}
                     setShowFindForm={setShowFindForm}
