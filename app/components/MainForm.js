@@ -13,6 +13,8 @@ import ProgressBar from "./ProgressBar";
 import { fetchRepresentatives } from "../assets/petitions/fetchRepresentatives";
 
 const MainForm = ({
+  senator,
+  setSenator,
   setLeads,
   leads,
   dataUser,
@@ -87,7 +89,10 @@ const MainForm = ({
       `&state=${dataUser.state}`,
       setMp,
       setShowLoadSpin,
-      setShowList
+      setShowList,
+      mp,
+      setSenator,
+      senator
     ).catch((error) => console.log("error", error));
     scroll.scrollToBottom();
   };
@@ -161,26 +166,39 @@ const MainForm = ({
                   </Form.Group>
             
               ) : (
-                  <Form.Group className={"field"} key={key}>
-                   <Form.Label className="select-label">{field.label}</Form.Label>
-                    <Form.Select
-                      aria-label="DefaulValue"
-                      required
-                      name={field.type}
-                      id="stateSelect-mainForm"
-                      onChange={handleChange}
-                    >
-                      <option key={"vacio"} value={""}>
-                        {field.placeholder}
-                      </option>
-                      {states.sort().map((estate) => (
-                        <option key={estate} value={estate}>
-                          {estate}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </Form.Group>
-            
+states.length > 0 ? 
+<Form.Group className={"field"} key={key}>
+<Form.Label className="select-label">{field.label}</Form.Label>
+ <Form.Select
+   aria-label="DefaulValue"
+   required
+   name={field.type}
+   id="stateSelect-mainForm"
+   onChange={handleChange}
+ >
+   <option key={"vacio"} value={""}>
+     {field.placeholder}
+   </option>
+   {states.sort().map((estate) => (
+     <option key={estate} value={estate}>
+       {estate}
+     </option>
+   ))}
+ </Form.Select>
+</Form.Group> 
+:
+   <Form.Group className="field" key={key}>
+   <Form.Label className="select-label">{field.label}</Form.Label>
+   <Form.Control
+     id="emailInput-mainForm"
+     type={field.type}
+     placeholder={field.placeholder}
+     name={field.type}
+     onChange={handleChange}
+     required
+   />
+ </Form.Group>
+
               );
             })}
             </div>
@@ -234,6 +252,30 @@ const MainForm = ({
             <div className="representatives-container">
               {mp.length > 0 ? (
                 mp.map((mps, index) => (
+                  <List
+                    setShowEmailForm={setShowEmailForm}
+                    setShowFindForm={setShowFindForm}
+                    showFindForm={showFindForm}
+                    emailData={emailData}
+                    setEmailData={setEmailData}
+                    dataUser={dataUser}
+                    mps={mps}
+                    clientId={clientId}
+                    key={index}
+                    tweet={tweet}
+                  />
+                ))
+              ) : (
+                <Alert variant="danger">
+                  No representatives have been found with the state that has
+                  provided us
+                </Alert>
+              )}
+            </div>
+            <h2>{mainData.senatorLabel}</h2>
+            <div className="representatives-container">
+              {senator.length > 0 ? (
+                senator.map((mps, index) => (
                   <List
                     setShowEmailForm={setShowEmailForm}
                     setShowFindForm={setShowFindForm}
