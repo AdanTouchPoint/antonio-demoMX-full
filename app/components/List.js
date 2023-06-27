@@ -3,9 +3,12 @@ import Button from "react-bootstrap/cjs/Button";
 
 
 const List = ({mps, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm, tweet}) => {
-
-    const tweetText = `.${mps.twitter} ${tweet}`
-
+    function urlEncode(text) {
+        var encodedText = encodeURIComponent(text);
+        return encodedText;
+      }
+    const decoder = urlEncode(tweet);
+    const tweetText = `.${mps.twitter} ${decoder}`;
     const click = e => {
         e.preventDefault()
         setEmailData({
