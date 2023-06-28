@@ -94,7 +94,7 @@ const MainForm = ({
       setSenator,
       senator
     ).catch((error) => console.log("error", error));
-    scroll.scrollToBottom();
+    scroll.scrollTo(1000)
   };
   if (!mainData) return "loading datos";
   if (!mp) return "loading datos";
@@ -134,14 +134,6 @@ const MainForm = ({
               faltantes.
             </Alert>
           ) : null}
-          <Link
-            activeClass="active"
-            to="section1"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-          ></Link>
           <Form
             name="fm-find"
             onSubmit={click}
@@ -243,11 +235,18 @@ states.length > 0 ?
               />
             ) : null}
           </Form>
-
           <div className={"container senators-container"} hidden={showList}>
             <div className="note-container">
               <p>{mainData.note}</p>
             </div>
+            <Link
+            activeClass="active"
+            to="section1"
+            spy={true}
+            smooth={true}
+            offset={70}
+            duration={500}
+          ></Link>
             <h2>{mainData.senatorLabel}</h2>
             <div className="representatives-container">
               {senator.length > 0 ? (
