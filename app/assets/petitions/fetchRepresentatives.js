@@ -35,7 +35,6 @@ if( payload.length > 0 ) {
     console.log(senator)
     console.log(mp)
 }
-
 const fetchRepresentativesAUS = async (petitionMethod, backendURLBase, endpoint, clientId, params = '', setMp, setSenator, setShowLoadSpin, setShowList) => {
     const datos = await fetchData(petitionMethod, backendURLBase, endpoint, clientId, params)
     let query = datos.data;
@@ -49,7 +48,6 @@ const fetchRepresentativesAUS = async (petitionMethod, backendURLBase, endpoint,
     setShowList(false)
 
 }
-
 const fetchRepresentativesBatch = async (petitionMethod, backendURLBase, endpoint, clientId, params = '', setMp, setShowLoadSpin, setShowList, setAllDataIn) => {
     const datos = await fetchData(petitionMethod, backendURLBase, endpoint, clientId, params)
     console.log(datos.data)
@@ -62,8 +60,6 @@ const fetchRepresentativesBatch = async (petitionMethod, backendURLBase, endpoin
     // await console.log(datos)
 
 }
-
-
 export{
     fetchRepresentatives,fetchRepresentativesAUS,fetchRepresentativesBatch
 }

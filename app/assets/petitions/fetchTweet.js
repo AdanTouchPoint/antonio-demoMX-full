@@ -5,8 +5,6 @@ import { fetchData } from "./fetchData";
         const textoTweet = datos.data?.docs[0] ? datos.data?.docs[0].Message : ' '
         setTweet(textoTweet)
     }
-
-
 export {
     fetchTweet
 }

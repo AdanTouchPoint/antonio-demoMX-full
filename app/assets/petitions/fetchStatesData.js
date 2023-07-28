@@ -9,8 +9,6 @@ const fetchStatesData = async (petitionMethod, backendURLBase, endpoint, clientI
     const uniq = new Set(states)
           setStates([...uniq]);
 }
-
-
 export{
     fetchStatesData
 }

@@ -4,7 +4,6 @@ const fetchMainContent = async (petitionMethod, backendURLBase, endpoint, client
     const datos = await fetchData(petitionMethod,backendURLBase,endpoint, clientId, params)
     const data = await formater(datos)
     datos.data !== {} && datos.data !== [] ? setMainData(data) : ''
-console.log(data)
 }
 
 export{

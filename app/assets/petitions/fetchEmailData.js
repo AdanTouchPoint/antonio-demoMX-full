@@ -4,10 +4,8 @@ const fetchEmailData = async (petitionMethod, backendURLBase, endpoint, clientId
   
   const datos = await fetchData(petitionMethod, backendURLBase, endpoint, clientId, params);
         const payload = datos.data?.docs[0]?.content;  
-        // console.log(payload, 'payload')
-          
+        // console.log(payload, 'payload') 
       if (payload?.length > 0) {
-        console.log("here1")
         const txt = payload.map((el) => {
           //console.log(el.children[0].text);
           return el.children[0].text + `\n`;

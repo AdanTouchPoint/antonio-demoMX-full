@@ -10,7 +10,6 @@ const fetchAllLeads = async (petitionMethod,backendURLBase, endpoint, clientId, 
     setLeads(data)
     console.log(data)
 }
-
 export {
     fetchLeads, fetchAllLeads
 }

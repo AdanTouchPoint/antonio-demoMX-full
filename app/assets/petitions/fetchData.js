@@ -3,13 +3,10 @@ const fetchData = async(petitionMethod, backendURLBase,endpoint, clientId, param
         method: `${petitionMethod}`,
         redirect: 'follow'
     }
-    
     const data = await fetch(`${backendURLBase}${endpoint}?clientId=${clientId}&${params}`, requestOptions);
     const datos = await data.json()
     return datos
 }
-
-
 export {
     fetchData
 }

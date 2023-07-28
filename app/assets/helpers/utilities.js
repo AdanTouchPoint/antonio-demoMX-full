@@ -2,7 +2,6 @@ export function urlEncode(text) {
     var encodedText = encodeURIComponent(text);
     return encodedText;
   }
-
   const mailerExtracter =  (mps) => {
     console.log(mps)
     let emailsArr =[];

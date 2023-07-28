@@ -10,7 +10,10 @@ import ThankYou from "./ThankYou";
 import Card from "react-bootstrap/cjs/Card";
 import { Link, animateScroll as scroll } from "react-scroll";
 import ProgressBar from "./ProgressBar";
-import { fetchRepresentatives,fetchRepresentativesBatch } from "../assets/petitions/fetchRepresentatives";
+import {
+  fetchRepresentatives,
+  fetchRepresentativesBatch,
+} from "../assets/petitions/fetchRepresentatives";
 import ListSelect from "./ListSelect";
 const MainForm = ({
   senator,
@@ -33,7 +36,7 @@ const MainForm = ({
   backendURLBaseServices,
   configurations,
   allDataIn,
-  setAllDataIn
+  setAllDataIn,
 }) => {
   const [showLoadSpin, setShowLoadSpin] = useState(false);
   const [showList, setShowList] = useState(true);
@@ -85,24 +88,24 @@ const MainForm = ({
     setError(false);
     if (configurations.SearchBy === "postcode") {
       fetchRepresentatives(
-       "GET",
-       backendURLBase,
-       endpoints.toGetRepresentativesByCpAUS,
-       clientId,
-       `&postcode=${dataUser.postalCode}`,
-       setMp,
-       setShowLoadSpin,
-       setShowList,
-       mp,
-       setSenator,
-       senator
-     ).catch((error) => console.log("error", error));
-     scroll.scrollTo(1000)
-     if (!mainData) return "loading datos";
-     if (!mp) return "loading datos";
-   }
+        "GET",
+        backendURLBase,
+        endpoints.toGetRepresentativesByCpAUS,
+        clientId,
+        `&postcode=${dataUser.postalCode}`,
+        setMp,
+        setShowLoadSpin,
+        setShowList,
+        mp,
+        setSenator,
+        senator
+      ).catch((error) => console.log("error", error));
+      scroll.scrollTo(1000);
+      if (!mainData) return "loading datos";
+      if (!mp) return "loading datos";
+    }
     if (configurations.SearchBy === "state") {
-       fetchRepresentatives(
+      fetchRepresentatives(
         "GET",
         backendURLBase,
         endpoints.toGetRepresentativesPerStates,
@@ -117,12 +120,12 @@ const MainForm = ({
         configurations.sendMany,
         setAllDataIn
       ).catch((error) => console.log("error", error));
-      scroll.scrollTo(1000)
+      scroll.scrollTo(1000);
       if (!mainData) return "loading datos";
       if (!mp) return "loading datos";
     }
     if (mainData.searchBy === "party") {
-       fetchRepresentatives(
+      fetchRepresentatives(
         "GET",
         backendURLBase,
         endpoints.toGetRepresentativesPerParty,
@@ -135,13 +138,13 @@ const MainForm = ({
         setSenator,
         senator
       ).catch((error) => console.log("error", error));
-      scroll.scrollTo(1000)
+      scroll.scrollTo(1000);
       if (!mainData) return "loading datos";
       if (!mp) return "loading datos";
     }
   };
   console.log("ConfigData", configurations.SearchBy);
- /* console.log("Email data", configurations);
+  /* console.log("Email data", configurations);
   console.log("States data", states);
   console.log("tweets", tweet);
   console.log("TYPdata", typData); 
@@ -183,11 +186,12 @@ const MainForm = ({
           >
             <h3 className="find-her-mp-text">{mainData.subtitleForm}</h3>
             <div className="fields-form">
-            {formFields.map((field, key) => {
-              console.log(field, key);
-              return field.type !== "state" ? (
+              {formFields.map((field, key) => {
+                return field.type !== "state" ? (
                   <Form.Group className="field" key={key}>
-                    <Form.Label className="select-label">{field.label}</Form.Label>
+                    <Form.Label className="select-label">
+                      {field.label}
+                    </Form.Label>
                     <Form.Control
                       id="emailInput-mainForm"
                       type={field.type}
@@ -197,44 +201,50 @@ const MainForm = ({
                       required
                     />
                   </Form.Group>
-            
-              ) : (
-states.length > 0 ? 
-<Form.Group className={"field"} key={key}>
-<Form.Label className="select-label">{field.label}</Form.Label>
- <Form.Select
-   aria-label="DefaulValue"
-   required
-   name={field.type}
-   id="stateSelect-mainForm"
-   onChange={handleChange}
- >
-   <option key={"vacio"} value={""}>
-     {field.placeholder}
-   </option>
-   {states.sort().map((estate) => (
-     <option key={estate} value={estate}>
-       {estate}
-     </option>
-   ))}
- </Form.Select>
-</Form.Group> 
-:
-   <Form.Group className="field" key={key}>
-   <Form.Label className="select-label">{field.label}</Form.Label>
-   <Form.Control
-     id="emailInput-mainForm"
-     type={field.type}
-     placeholder={field.placeholder}
-     name={field.type}
-     onChange={handleChange}
-     required
-   />
- </Form.Group>
-              );
-            })}
+                ) : states.length > 0 ? (
+                  <Form.Group className={"field"} key={key}>
+                    <Form.Label className="select-label">
+                      {field.label}
+                    </Form.Label>
+                    <Form.Select
+                      aria-label="DefaulValue"
+                      required
+                      name={field.type}
+                      id="stateSelect-mainForm"
+                      onChange={handleChange}
+                    >
+                      <option key={"vacio"} value={""}>
+                        {field.placeholder}
+                      </option>
+                      {states.sort().map((estate) => (
+                        <option key={estate} value={estate}>
+                          {estate}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                ) : (
+                  <Form.Group className="field" key={key}>
+                    <Form.Label className="select-label">
+                      {field.label}
+                    </Form.Label>
+                    <Form.Control
+                      id="emailInput-mainForm"
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      name={field.type}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                );
+              })}
             </div>
-            <Form.Group className="field select-styles-form" style={{ textAlign: "justify" }} controlId="conditions">
+            <Form.Group
+              className="field select-styles-form"
+              style={{ textAlign: "justify" }}
+              controlId="conditions"
+            >
               <Form.Check
                 id="tycCheckbox-mainForm"
                 name="conditions"
@@ -275,101 +285,100 @@ states.length > 0 ?
               />
             ) : null}
           </Form>
-{ configurations.sendMany === "Si" ? (
+          {configurations.sendMany === "Si" ? (
             <div className={"container senators-container"} hidden={showList}>
-            <div className="note-container">
-              <p>{mainData.note}</p>
+              <div className="note-container">
+                <p>{mainData.note}</p>
+              </div>
+              <h2>{mainData.positionName}</h2>
+              <div className="representatives-container">
+                {mp.length > 0 ? (
+                  <ListSelect
+                    setShowEmailForm={setShowEmailForm}
+                    setShowFindForm={setShowFindForm}
+                    showFindForm={showFindForm}
+                    emailData={emailData}
+                    setEmailData={setEmailData}
+                    dataUser={dataUser}
+                    mp={mp}
+                    clientId={clientId}
+                    // key={index}
+                    tweet={tweet}
+                    allDataIn={allDataIn}
+                    setAllDataIn={setAllDataIn}
+                  />
+                ) : (
+                  <Alert variant="danger">
+                    No representatives have been found with the state that has
+                    provided us
+                  </Alert>
+                )}
+              </div>
             </div>
-            <h2>{mainData.positionName}</h2>
-            <div className="representatives-container">
-              {mp.length > 0 ? (
-                <ListSelect
-                  setShowEmailForm={setShowEmailForm}
-                  setShowFindForm={setShowFindForm}
-                  showFindForm={showFindForm}
-                  emailData={emailData}
-                  setEmailData={setEmailData}
-                  dataUser={dataUser}
-                  mp={mp}
-                  clientId={clientId}
-                  // key={index}
-                  tweet={tweet}
-                  allDataIn={allDataIn}
-                  setAllDataIn={setAllDataIn}
-                />
-              ) : (
-                <Alert variant="danger">
-                  No representatives have been found with the state that has
-                  provided us
-                </Alert>
-              )}
+          ) : (
+            <div className={"container senators-container"} hidden={showList}>
+              <div className="note-container">
+                <p>{mainData.note}</p>
+              </div>
+              <Link
+                activeClass="active"
+                to="section1"
+                spy={true}
+                smooth={true}
+                offset={70}
+                duration={500}
+              ></Link>
+              <h2>{mainData.senatorLabel}</h2>
+              <div className="representatives-container">
+                {senator.length > 0 ? (
+                  senator.map((mps, index) => (
+                    <List
+                      setShowEmailForm={setShowEmailForm}
+                      setShowFindForm={setShowFindForm}
+                      showFindForm={showFindForm}
+                      emailData={emailData}
+                      setEmailData={setEmailData}
+                      dataUser={dataUser}
+                      mps={mps}
+                      clientId={clientId}
+                      key={index}
+                      tweet={tweet}
+                    />
+                  ))
+                ) : (
+                  <Alert variant="danger">
+                    No representatives have been found with the state that has
+                    provided us
+                  </Alert>
+                )}
+              </div>
+              <h2>{mainData.positionName}</h2>
+              <div className="representatives-container">
+                {mp.length > 0 ? (
+                  mp.map((mps, index) => (
+                    <List
+                      setShowEmailForm={setShowEmailForm}
+                      setShowFindForm={setShowFindForm}
+                      showFindForm={showFindForm}
+                      emailData={emailData}
+                      setEmailData={setEmailData}
+                      dataUser={dataUser}
+                      mps={mps}
+                      clientId={clientId}
+                      key={index}
+                      tweet={tweet}
+                    />
+                  ))
+                ) : (
+                  <Alert variant="danger">
+                    No representatives have been found with the state that has
+                    provided us
+                  </Alert>
+                )}
+              </div>
             </div>
-          </div>
-)
- : ( 
-  <div className={"container senators-container"} hidden={showList}>
-  <div className="note-container">
-    <p>{mainData.note}</p>
-  </div>
-  <Link
-  activeClass="active"
-  to="section1"
-  spy={true}
-  smooth={true}
-  offset={70}
-  duration={500}
-></Link>
-  <h2>{mainData.senatorLabel}</h2>
-  <div className="representatives-container">
-    {senator.length > 0 ? (
-      senator.map((mps, index) => (
-        <List
-          setShowEmailForm={setShowEmailForm}
-          setShowFindForm={setShowFindForm}
-          showFindForm={showFindForm}
-          emailData={emailData}
-          setEmailData={setEmailData}
-          dataUser={dataUser}
-          mps={mps}
-          clientId={clientId}
-          key={index}
-          tweet={tweet}
-        />
-      ))
-    ) : (
-      <Alert variant="danger">
-        No representatives have been found with the state that has
-        provided us
-      </Alert>
-    )}
-  </div>
-  <h2>{mainData.positionName}</h2>
-  <div className="representatives-container">
-    {mp.length > 0 ? (
-      mp.map((mps, index) => (
-        <List
-          setShowEmailForm={setShowEmailForm}
-          setShowFindForm={setShowFindForm}
-          showFindForm={showFindForm}
-          emailData={emailData}
-          setEmailData={setEmailData}
-          dataUser={dataUser}
-          mps={mps}
-          clientId={clientId}
-          key={index}
-          tweet={tweet}
-        />
-      ))
-    ) : (
-      <Alert variant="danger">
-        No representatives have been found with the state that has
-        provided us
-      </Alert>
-    )}
-  </div>
-</div>
- )}
-    </div>
+          )}
+        </div>
       </div>
       <EmailForm
         setLeads={setLeads}
