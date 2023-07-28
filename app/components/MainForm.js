@@ -10,8 +10,8 @@ import ThankYou from "./ThankYou";
 import Card from "react-bootstrap/cjs/Card";
 import { Link, animateScroll as scroll } from "react-scroll";
 import ProgressBar from "./ProgressBar";
-import { fetchRepresentatives } from "../assets/petitions/fetchRepresentatives";
-
+import { fetchRepresentatives,fetchRepresentativesBatch } from "../assets/petitions/fetchRepresentatives";
+import ListSelect from "./ListSelect";
 const MainForm = ({
   senator,
   setSenator,
@@ -31,6 +31,9 @@ const MainForm = ({
   backendURLBase,
   endpoints,
   backendURLBaseServices,
+  configurations,
+  allDataIn,
+  setAllDataIn
 }) => {
   const [showLoadSpin, setShowLoadSpin] = useState(false);
   const [showList, setShowList] = useState(true);
@@ -48,7 +51,6 @@ const MainForm = ({
       setTac(false);
     }
   };
-
   const handleChange = (e) => {
     e.preventDefault();
     setDataUser({
@@ -81,26 +83,65 @@ const MainForm = ({
     }
     setShowLoadSpin(true);
     setError(false);
-    fetchRepresentatives(
-      "GET",
-      backendURLBase,
-      endpoints.teGetRepresentativesPerStates,
-      clientId,
-      `&state=${dataUser.state}`,
-      setMp,
-      setShowLoadSpin,
-      setShowList,
-      mp,
-      setSenator,
-      senator
-    ).catch((error) => console.log("error", error));
-    scroll.scrollTo(1000)
+    if (configurations.SearchBy === "postcode") {
+      fetchRepresentatives(
+       "GET",
+       backendURLBase,
+       endpoints.toGetRepresentativesByCpAUS,
+       clientId,
+       `&postcode=${dataUser.postalCode}`,
+       setMp,
+       setShowLoadSpin,
+       setShowList,
+       mp,
+       setSenator,
+       senator
+     ).catch((error) => console.log("error", error));
+     scroll.scrollTo(1000)
+     if (!mainData) return "loading datos";
+     if (!mp) return "loading datos";
+   }
+    if (configurations.SearchBy === "state") {
+       fetchRepresentatives(
+        "GET",
+        backendURLBase,
+        endpoints.toGetRepresentativesPerStates,
+        clientId,
+        `&state=${dataUser.state}`,
+        setMp,
+        setShowLoadSpin,
+        setShowList,
+        mp,
+        setSenator,
+        senator,
+        configurations.sendMany,
+        setAllDataIn
+      ).catch((error) => console.log("error", error));
+      scroll.scrollTo(1000)
+      if (!mainData) return "loading datos";
+      if (!mp) return "loading datos";
+    }
+    if (mainData.searchBy === "party") {
+       fetchRepresentatives(
+        "GET",
+        backendURLBase,
+        endpoints.toGetRepresentativesPerParty,
+        clientId,
+        `&party=${dataUser.party}`,
+        setMp,
+        setShowLoadSpin,
+        setShowList,
+        mp,
+        setSenator,
+        senator
+      ).catch((error) => console.log("error", error));
+      scroll.scrollTo(1000)
+      if (!mainData) return "loading datos";
+      if (!mp) return "loading datos";
+    }
   };
-  if (!mainData) return "loading datos";
-  if (!mp) return "loading datos";
-/*
-  console.log("Main page data", mainData);
-  console.log("Email data", dataUser);
+  console.log("ConfigData", configurations.SearchBy);
+ /* console.log("Email data", configurations);
   console.log("States data", states);
   console.log("tweets", tweet);
   console.log("TYPdata", typData); 
@@ -190,7 +231,6 @@ states.length > 0 ?
      required
    />
  </Form.Group>
-
               );
             })}
             </div>
@@ -235,59 +275,28 @@ states.length > 0 ?
               />
             ) : null}
           </Form>
-          <div className={"container senators-container"} hidden={showList}>
+{ configurations.sendMany === "Si" ? (
+            <div className={"container senators-container"} hidden={showList}>
             <div className="note-container">
               <p>{mainData.note}</p>
-            </div>
-            <Link
-            activeClass="active"
-            to="section1"
-            spy={true}
-            smooth={true}
-            offset={70}
-            duration={500}
-          ></Link>
-            <h2>{mainData.senatorLabel}</h2>
-            <div className="representatives-container">
-              {senator.length > 0 ? (
-                senator.map((mps, index) => (
-                  <List
-                    setShowEmailForm={setShowEmailForm}
-                    setShowFindForm={setShowFindForm}
-                    showFindForm={showFindForm}
-                    emailData={emailData}
-                    setEmailData={setEmailData}
-                    dataUser={dataUser}
-                    mps={mps}
-                    clientId={clientId}
-                    key={index}
-                    tweet={tweet}
-                  />
-                ))
-              ) : (
-                <Alert variant="danger">
-                  No representatives have been found with the state that has
-                  provided us
-                </Alert>
-              )}
             </div>
             <h2>{mainData.positionName}</h2>
             <div className="representatives-container">
               {mp.length > 0 ? (
-                mp.map((mps, index) => (
-                  <List
-                    setShowEmailForm={setShowEmailForm}
-                    setShowFindForm={setShowFindForm}
-                    showFindForm={showFindForm}
-                    emailData={emailData}
-                    setEmailData={setEmailData}
-                    dataUser={dataUser}
-                    mps={mps}
-                    clientId={clientId}
-                    key={index}
-                    tweet={tweet}
-                  />
-                ))
+                <ListSelect
+                  setShowEmailForm={setShowEmailForm}
+                  setShowFindForm={setShowFindForm}
+                  showFindForm={showFindForm}
+                  emailData={emailData}
+                  setEmailData={setEmailData}
+                  dataUser={dataUser}
+                  mp={mp}
+                  clientId={clientId}
+                  // key={index}
+                  tweet={tweet}
+                  allDataIn={allDataIn}
+                  setAllDataIn={setAllDataIn}
+                />
               ) : (
                 <Alert variant="danger">
                   No representatives have been found with the state that has
@@ -296,7 +305,71 @@ states.length > 0 ?
               )}
             </div>
           </div>
-        </div>
+)
+ : ( 
+  <div className={"container senators-container"} hidden={showList}>
+  <div className="note-container">
+    <p>{mainData.note}</p>
+  </div>
+  <Link
+  activeClass="active"
+  to="section1"
+  spy={true}
+  smooth={true}
+  offset={70}
+  duration={500}
+></Link>
+  <h2>{mainData.senatorLabel}</h2>
+  <div className="representatives-container">
+    {senator.length > 0 ? (
+      senator.map((mps, index) => (
+        <List
+          setShowEmailForm={setShowEmailForm}
+          setShowFindForm={setShowFindForm}
+          showFindForm={showFindForm}
+          emailData={emailData}
+          setEmailData={setEmailData}
+          dataUser={dataUser}
+          mps={mps}
+          clientId={clientId}
+          key={index}
+          tweet={tweet}
+        />
+      ))
+    ) : (
+      <Alert variant="danger">
+        No representatives have been found with the state that has
+        provided us
+      </Alert>
+    )}
+  </div>
+  <h2>{mainData.positionName}</h2>
+  <div className="representatives-container">
+    {mp.length > 0 ? (
+      mp.map((mps, index) => (
+        <List
+          setShowEmailForm={setShowEmailForm}
+          setShowFindForm={setShowFindForm}
+          showFindForm={showFindForm}
+          emailData={emailData}
+          setEmailData={setEmailData}
+          dataUser={dataUser}
+          mps={mps}
+          clientId={clientId}
+          key={index}
+          tweet={tweet}
+        />
+      ))
+    ) : (
+      <Alert variant="danger">
+        No representatives have been found with the state that has
+        provided us
+      </Alert>
+    )}
+  </div>
+</div>
+ )}
+    </div>
       </div>
       <EmailForm
         setLeads={setLeads}
@@ -314,6 +387,9 @@ states.length > 0 ?
         backendURLBase={backendURLBase}
         backendURLBaseServices={backendURLBaseServices}
         mainData={mainData}
+        allDataIn={allDataIn}
+        setAllDataIn={setAllDataIn}
+        configurations={configurations}
       />
       <ThankYou
         clientId={clientId}

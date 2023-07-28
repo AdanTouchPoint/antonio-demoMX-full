@@ -1,12 +1,8 @@
 import React from 'react'
 import Button from "react-bootstrap/cjs/Button";
-
+import { urlEncode } from '../assets/helpers/utilities';
 
 const List = ({mps, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm, tweet}) => {
-    function urlEncode(text) {
-        var encodedText = encodeURIComponent(text);
-        return encodedText;
-      }
     const decoder = urlEncode(tweet);
     const tweetText = `.${mps.twitter} ${decoder}`;
     const click = e => {
@@ -46,7 +42,7 @@ const List = ({mps, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm,
                 </div>
                 <div >
                     {
-                        mps.contact ?
+                        mps.contact || mps.email ?
                             <Button
                                 id="email-listView"
                                 className='list-button'

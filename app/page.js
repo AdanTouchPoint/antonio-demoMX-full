@@ -9,26 +9,34 @@ import { fetchTweet } from './assets/petitions/fetchTweet';
 import { fetchTYM } from './assets/petitions/fetchTYM';
 import { fetchMainContent } from './assets/petitions/fetchMainContent';
 import {fetchAllLeads} from './assets/petitions/fetchLeads'
-
+import { fetchConfig } from './assets/petitions/fetchConfig';
+import { fetchQuestions } from './assets/petitions/fetchQuestions';
 //require('dotenv').config()
 function Home() {
+  const [configurations , setConfigurations]= useState({
+    lenguage: "es",
+    SearchBy:"state",
+    sendMany: false,
+    hasQuestions: false,
+    region: "mx"
+  })
   const [emailData, setEmailData] = useState({
     userName: ''
   })
   const [dataUser, setDataUser] = useState({
-    userName: '',
-    zipCode: '',
-    emailUser: '',
-    subject:'',//'The Subject Line is Pre-Filled and can be Edited',
-    text:'',//'Users will see a pre-filled email and can edit it before sending. If the system administrator prefers, subject line and/or body text can made uneditable.'
-    state:''
+
       })
       const [backendURLBase] = useState(`${process.env.NEXT_PUBLIC_URL}`)
       const [backendURLBaseServices] = useState(`${process.env.NEXT_PUBLIC_URL_SERVICES}`)
       const [clientId] = useState(`${process.env.NEXT_PUBLIC_CLIENT_ID}`)
       const [endpoints] = useState({
+        toGetQuestions:'/questions/',
+        toGetConfs:'/confs/',
+        toGetAllRepresentativesAUS:'/all-senators/',
+        toGetRepresentativesByCpAUS:'/find-mp/', 
+        toGetRepresentativesPerParty:'/representatives-party/',
         toGetAllRepresentatives:'/all-representatives/',
-        teGetRepresentativesPerStates:'/representatives-state/',
+        toGetRepresentativesPerStates:'/representatives-state/',
         toGetEmailsContent:'/email-message/',
         toGetMainData:'/main/',
         toGetThankYouMessage:'/typ-message/',
@@ -36,12 +44,18 @@ function Home() {
         toSaveLeads:'/leads/',
         toGetAllLeads:'/leads/',
         toSendEmails:'/send-email/',
+        toSendEmailBuilder:'/email-builder/',
+        toSendEmailBatch:'/email-batch/'
       })
     const [leads, setLeads] = useState()
     const [mp, setMp] = useState([])
     const [senator, setSenator] = useState([])
     const [states, setStates] = useState([])
     const [tweet, setTweet] = useState('')
+    const [dataQuestions,setDataQuestions] = useState()
+    const [questions, setQuestions] = useState({
+      question1: '',
+    })
     const [mainData, setMainData] = useState({
       mainImg:'./assets/laptop-with-notebook-and-glasses-on-table.jpg',
       title:'Please enter a title on your board',
@@ -68,11 +82,14 @@ function Home() {
       repeatButtonTyp : 'Please fill in this field on the dashboard',
     })
     const [loading, setLoading] = useState(true)
+    const [allDataIn, setAllDataIn] = useState([])
    // const adanCID ='636dadcf2626f92aade6664a'
     useEffect(() => {
 
         async function fetchData() {
           await Promise.all([
+            //fetchQuestions('GET', backendURLBase, endpoints.toGetQuestions, clientId, '', setDataQuestions),
+            fetchConfig('GET', backendURLBase, endpoints.toGetConfs, clientId, setConfigurations),
             fetchAllLeads('GET', backendURLBase, endpoints.toGetAllLeads, clientId, setLeads),
             fetchMainContent('GET', backendURLBase, endpoints.toGetMainData, clientId, '', setMainData),
             fetchEmailData('GET', backendURLBase, endpoints.toGetEmailsContent, clientId, "", setDataUser),
@@ -93,29 +110,30 @@ function Home() {
         loading && <LoadingMainForm/>
       }
       {
-        !loading && (
-          <MainForm
-              setLeads={setLeads}
-              leads={leads}
-              setEmailData={setEmailData}
-              emailData={emailData}
-              dataUser={dataUser}
-              setDataUser={setDataUser}
-              mp={mp}
-              setMp={setMp}
-              senator={senator}
-              setSenator={setSenator}
-              clientId={clientId}
-              states={states}
-              endpoints={endpoints}
-              tweet={tweet}
-              typData={typData}
-              mainData={mainData}
-              backendURLBase={backendURLBase}
-              backendURLBaseServices={backendURLBaseServices}
-              
-          />
-        )
+        !loading === true &&  
+     ( <MainForm
+        configurations={configurations}
+        setLeads={setLeads}
+        leads={leads}
+        setEmailData={setEmailData}
+        emailData={emailData}
+        dataUser={dataUser}
+        setDataUser={setDataUser}
+        mp={mp}
+        setMp={setMp}
+        senator={senator}
+        setSenator={setSenator}
+        clientId={clientId}
+        states={states}
+        endpoints={endpoints}
+        tweet={tweet}
+        typData={typData}
+        mainData={mainData}
+        backendURLBase={backendURLBase}
+        backendURLBaseServices={backendURLBaseServices}
+        allDataIn={allDataIn}
+        setAllDataIn={setAllDataIn}
+    /> )
       }
       </>
     )

@@ -3,10 +3,11 @@ import { fetchData } from './fetchData';
 const fetchEmailData = async (petitionMethod, backendURLBase, endpoint, clientId, params = '', setDataUser) =>{
   
   const datos = await fetchData(petitionMethod, backendURLBase, endpoint, clientId, params);
-        const payload = datos.data.docs[0].content;  
+        const payload = datos.data?.docs[0]?.content;  
         // console.log(payload, 'payload')
           
-      if (payload.length > 0) {
+      if (payload?.length > 0) {
+        console.log("here1")
         const txt = payload.map((el) => {
           //console.log(el.children[0].text);
           return el.children[0].text + `\n`;
@@ -23,6 +24,12 @@ const fetchEmailData = async (petitionMethod, backendURLBase, endpoint, clientId
         }));
         return txt;
       }
+     else{
+      console.log("here2")
+      setDataUser({
+        "name": "N/A"
+       })
+     }
 }
     
 export {

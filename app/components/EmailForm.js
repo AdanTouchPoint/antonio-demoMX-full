@@ -2,15 +2,15 @@
 import React, {useState} from 'react'
 import Button from "react-bootstrap/cjs/Button";
 import Form from "react-bootstrap/Form";
-
 import InputGroup from "react-bootstrap/InputGroup"
 import Col from "react-bootstrap/cjs/Col";
 import Alert from "react-bootstrap/Alert";
 import Loader from "react-loader-spinner";
 import { fetchData } from '../assets/petitions/fetchData';
 import {fetchLeads} from '../assets/petitions/fetchLeads';
+import {urlEncode} from '../assets/helpers/utilities';
 
-const EmailForm = ({leads, setLeads, setShowThankYou, setShowFindForm, dataUser, setDataUser, showEmailForm, setShowEmailForm, emailData, setEmailData, clientId, backendURLBase, endpoints, backendURLBaseServices, mainData}) => {
+const EmailForm = ({allDataIn,setAllDataIn,configurations,leads, setLeads, setShowThankYou, setShowFindForm, dataUser, setDataUser, showEmailForm, setShowEmailForm, emailData, setEmailData, clientId, backendURLBase, endpoints, backendURLBaseServices, mainData}) => {
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState(false)
     const [showLoadSpin, setShowLoadSpin] = useState(false)
@@ -18,12 +18,12 @@ const EmailForm = ({leads, setLeads, setShowThankYou, setShowFindForm, dataUser,
         e.preventDefault()
         setDataUser({
             ...dataUser,
-            [e.target.name]: e.target.value.replace(/\n\r?/g, '<br/>' ).replace(/#/g, " ")
+            [e.target.name]: e.target.value.replace(/\n\r?/g, '<br/>')
         })
         setEmailData({
             ...dataUser,
             ...emailData,
-            [e.target.name]: e.target.value.replace(/\n\r?/g, '<br/>' ).replace(/#/g, " ")
+            [e.target.name]: e.target.value.replace(/\n\r?/g, '<br/>')
         })
     }
     const {userName, text, subject } = dataUser
@@ -43,7 +43,8 @@ const EmailForm = ({leads, setLeads, setShowThankYou, setShowFindForm, dataUser,
                 return
             }
         setError(false)
-        const payload = await fetchData('GET', backendURLBaseServices, endpoints.toSendEmails, clientId, `to=${emailData.contact}&subject=${dataUser.subject}&firstName=${dataUser.userName}&emailData=${dataUser.emailUser}&text=${dataUser.text.replace(/\n\r?/g, "<br/>")}` )
+       if(configurations.sendMany === "Si") {
+        const payload = await fetchData('GET', backendURLBaseServices, endpoints.toSendEmailBatch, clientId, `to=${allDataIn}&subject=${dataUser.subject}&firstName=${dataUser.userName}&emailData=${dataUser.emailUser}&text=${dataUser.text.replace(/\n\r?/g, "<br/>")}`)
         console.log(payload.success)
         setShowLoadSpin(false)
         if (payload.success === true) {
@@ -52,7 +53,34 @@ const EmailForm = ({leads, setLeads, setShowThankYou, setShowFindForm, dataUser,
             setShowThankYou(false)
             setLeads(leads+1)
         }
-        if(payload.success !== true){
+        if(payload.success !== true) {
+        fetchLeads(false, backendURLBase, endpoints, clientId, dataUser, emailData)
+        setLeads(leads+1)
+            return (
+                <Alert>
+                    El correo no ha sido enviado con éxito, por favor intente de nuevo más tarde
+                    <Button
+                    className={'button-email-form'}
+                    variant={'dark'}
+                    onClick={back}>
+                    Regresar
+                </Button>
+                </Alert>
+            )
+        }
+    }
+        //const decode = 
+       //const encode = urlEncode(decode)
+        const payload = await fetchData('GET', backendURLBaseServices, endpoints.toSendEmails, clientId,`to=${emailData.contact}&subject=${urlEncode(dataUser.subject)}&firstName=${urlEncode(dataUser.userName)}&emailData=${urlEncode(dataUser.emailUser)}&text=${urlEncode(dataUser.text.replace(/\n\r?/g, "<br/>"))}` )
+        console.log(payload.success)
+        setShowLoadSpin(false)
+        if (payload.success === true) {
+            fetchLeads(true, backendURLBase, endpoints, clientId, dataUser, emailData)
+            setShowEmailForm(true)
+            setShowThankYou(false)
+            setLeads(leads+1)
+        }
+        if(payload.success !== true) {
         fetchLeads(false, backendURLBase, endpoints, clientId, dataUser, emailData)
         setLeads(leads+1)
             return (
