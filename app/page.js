@@ -86,11 +86,9 @@ function Home() {
   });
   const [loading, setLoading] = useState(true);
   const [allDataIn, setAllDataIn] = useState([]);
-  // const adanCID ='636dadcf2626f92aade6664a'
   useEffect(() => {
     async function fetchData() {
       await Promise.all([
-        //fetchQuestions('GET', backendURLBase, endpoints.toGetQuestions, clientId, '', setDataQuestions),
         fetchConfig(
           "GET",
           backendURLBase,
