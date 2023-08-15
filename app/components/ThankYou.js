@@ -22,11 +22,6 @@ const ThankYou = ({
               ? typData.data?.docs[0].thankYouMessage
               : typData.thankYouMessage}
           </h3>
-          <h5>
-            {typData.data?.docs[0]
-              ? typData.data?.docs[0].secondThankYouMessage
-              : typData.secondThankYouMessage}
-          </h5>
           <Button
             id="repeatButton-typView"
             type={"submit"}
@@ -38,6 +33,11 @@ const ThankYou = ({
               ? typData.data?.docs[0].repeatButtonTyp
               : typData.repeatButtonTyp}
           </Button>
+          <h5>
+            {typData.data?.docs[0]
+              ? typData.data?.docs[0].secondThankYouMessage
+              : typData.secondThankYouMessage}
+          </h5>
           <h5>
             {typData.data?.docs[0]
               ? typData.data?.docs[0].shareLabel
